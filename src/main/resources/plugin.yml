@@ -1,0 +1,7 @@
+name: prodigysuits
+author: cocoraid
+main: fr.cocoraid.prodigysuits.ProdigySuits
+version: 1.0
+commands:
+    prodigysuits:
+        aliases: [ps]
