@@ -56,7 +56,7 @@ public class ProdigySuits extends JavaPlugin {
             Player p = (Player) sender;
             if(args.length == 0) {
                 ProdigyPlayer pp = ProdigyPlayer.instanceOfPlayer(p);
-                pp.equip("hazmat");
+                pp.equip("rainbow");
             }
 
             if(args.length == 1) {

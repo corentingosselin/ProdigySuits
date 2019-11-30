@@ -3,11 +3,8 @@ package fr.cocoraid.prodigysuits.suit.suits.rainbow;
 import com.google.common.collect.Iterables;
 import fr.cocoraid.prodigysuits.item.FlyingItem;
 import fr.cocoraid.prodigysuits.particle.ParticleEffect;
-import fr.cocoraid.prodigysuits.particle.data.color.RegularColor;
 import fr.cocoraid.prodigysuits.suit.Suit;
-import fr.cocoraid.prodigysuits.suit.suits.terra.TerraChestplate;
 import fr.cocoraid.prodigysuits.utils.ItemBuilder;
-import fr.cocoraid.prodigysuits.utils.UtilMath;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
@@ -16,8 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class RainbowSuit extends Suit {
 
@@ -131,7 +128,9 @@ public class RainbowSuit extends Suit {
         }
 
         public void update() {
-            if(nyancat != null) nyancat.update(location);
+            if(nyancat == null) return;
+             nyancat.update(location);
+            if(nyancat == null) return;
             Location l = nyancat.getCurrentLocation().clone().add(0,0.65,0);
             l.add(nyancat.getDirection().clone().multiply(-1.05));
             for(int i = 0; i < 4; i++) {

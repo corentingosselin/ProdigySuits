@@ -47,14 +47,6 @@ public class FlammaSuit extends Suit {
         }
     }
 
-    private static List<java.awt.Color> colors = new ArrayList<>();
-    {
-        for (int g = 0; g < 255; g++) colors.add(new java.awt.Color(255, g, 0));
-        for (int g = 255; g < 0; g--) colors.add(new java.awt.Color(255, g, 0));
-
-        colors.add(new java.awt.Color(0, 255, 0));
-    }
-    private static Iterator<Color> infinite = Iterables.cycle(colors).iterator();
 
     @Override
     public void asyncGlobalAnimate(SuitManager manager, Location location) {
@@ -72,22 +64,6 @@ public class FlammaSuit extends Suit {
         super.asyncGlobalAnimate(p);
         if(blazes.containsKey(p.getUniqueId()))
             blazes.get(p.getUniqueId()).update(p.getLocation());
-
-        if(ProdigyPlayer.instanceOfPlayer(p).getManager().isAll()) {
-            Color c = infinite.next();
-            int slot = 0;
-            ItemStack[] armors = p.getInventory().getArmorContents();
-            for (ItemStack armor : armors) {
-                if (armor.getItemMeta() instanceof LeatherArmorMeta) {
-                    LeatherArmorMeta meta = (LeatherArmorMeta) armor.getItemMeta();
-                    meta.setColor(org.bukkit.Color.fromBGR(c.getRed(), c.getGreen(), c.getBlue()));
-                    armor.setItemMeta(meta);
-                    armors[slot] = armor;
-                    slot++;
-                }
-            }
-            p.getInventory().setArmorContents(armors);
-        }
     }
 
     @Override
