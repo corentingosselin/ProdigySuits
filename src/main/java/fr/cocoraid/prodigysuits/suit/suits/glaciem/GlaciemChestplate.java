@@ -3,7 +3,7 @@ package fr.cocoraid.prodigysuits.suit.suits.glaciem;
 import fr.cocoraid.prodigysuits.packet.wrapper.packet.WrapperPlayServerNamedSoundEffect;
 import fr.cocoraid.prodigysuits.particle.ParticleEffect;
 import fr.cocoraid.prodigysuits.particle.data.texture.BlockTexture;
-import fr.cocoraid.prodigysuits.suit.FlyingItem;
+import fr.cocoraid.prodigysuits.item.FlyingItem;
 import fr.cocoraid.prodigysuits.suit.parts.Chestplate;
 import fr.cocoraid.prodigysuits.utils.ItemBuilder;
 import org.bukkit.Color;
@@ -78,29 +78,29 @@ public class GlaciemChestplate extends Chestplate {
                 return;
             }
 
-                item.setDirection(p.getEyeLocation().getDirection());
-                item.setDirectionSpeed(0.5f);
-                item.setStayTime(2);
-                item.addListener(new FlyingItem.ItemListener() {
-                    @Override
-                    public void onRemove() {
-                        ParticleEffect.BLOCK_CRACK.display(item.getCurrentLocation(), 0.5F, 0.5F, 0.5F, 0.2F, 10, new BlockTexture(Material.SNOW_BLOCK));
-                        ParticleEffect.SNOW_SHOVEL.display(item.getCurrentLocation(), 0.5F, 0.5F, 0.5F, 0.2F, 20, null);
-                    }
+            item.setDirection(p.getEyeLocation().getDirection());
+            item.setDirectionSpeed(0.5f);
+            item.setStayTime(2);
+            item.addListener(new FlyingItem.ItemListener() {
+                @Override
+                public void onRemove() {
+                    ParticleEffect.BLOCK_CRACK.display(item.getCurrentLocation(), 0.5F, 0.5F, 0.5F, 0.2F, 10, new BlockTexture(Material.SNOW_BLOCK));
+                    ParticleEffect.SNOW_SHOVEL.display(item.getCurrentLocation(), 0.5F, 0.5F, 0.5F, 0.2F, 20, null);
+                }
 
-                    @Override
-                    public void onUpdate() {
-                        WrapperPlayServerNamedSoundEffect sound = new WrapperPlayServerNamedSoundEffect();
-                        sound.setEffectPositionX(item.getCurrentLocation().getX());
-                        sound.setEffectPositionY(item.getCurrentLocation().getY());
-                        sound.setEffectPositionZ(item.getCurrentLocation().getZ());
-                        sound.setSoundName("dig.glass");
-                        sound.setPitch(2);
-                        sound.setVolume(0.1F);
-                        sound.sendWorldPacket(item.getCurrentLocation().getWorld());
-                        ParticleEffect.BLOCK_CRACK.display(item.getCurrentLocation().clone().add(0, 0.2, 0), 0.1F, 0.1F, 0.1F, 0.1F, 2, new BlockTexture(Material.PACKED_ICE));
-                    }
-                });
+                @Override
+                public void onUpdate() {
+                    WrapperPlayServerNamedSoundEffect sound = new WrapperPlayServerNamedSoundEffect();
+                    sound.setEffectPositionX(item.getCurrentLocation().getX());
+                    sound.setEffectPositionY(item.getCurrentLocation().getY());
+                    sound.setEffectPositionZ(item.getCurrentLocation().getZ());
+                    sound.setSoundName("dig.glass");
+                    sound.setPitch(2);
+                    sound.setVolume(0.1F);
+                    sound.sendWorldPacket(item.getCurrentLocation().getWorld());
+                    ParticleEffect.BLOCK_CRACK.display(item.getCurrentLocation().clone().add(0, 0.2, 0), 0.1F, 0.1F, 0.1F, 0.1F, 2, new BlockTexture(Material.PACKED_ICE));
+                }
+            });
 
         }
     }

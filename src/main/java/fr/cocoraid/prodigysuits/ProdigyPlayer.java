@@ -14,7 +14,7 @@ public class ProdigyPlayer {
     private static Map<UUID,ProdigyPlayer> prodigyPlayers = new HashMap<>();
 
     private Suit suit;
-    private SuitManager manager = new SuitManager();
+    private SuitManager manager;
 
     public void equip(String suitName) {
         if(suit != null) {
@@ -66,6 +66,7 @@ public class ProdigyPlayer {
     private Player player;
     public ProdigyPlayer(Player player) {
         this.player = player;
+        manager = new SuitManager(player.getUniqueId());
     }
 
     public static ProdigyPlayer instanceOfPlayer(Player p) {

@@ -3,15 +3,21 @@ package fr.cocoraid.prodigysuits.suit;
 import fr.cocoraid.prodigysuits.ProdigyPlayer;
 import fr.cocoraid.prodigysuits.ProdigySuits;
 import fr.cocoraid.prodigysuits.suit.suits.SuitManager;
+import fr.cocoraid.prodigysuits.suit.suits.aere.AereSuit;
 import fr.cocoraid.prodigysuits.suit.suits.aqua.AquaSuit;
+import fr.cocoraid.prodigysuits.suit.suits.darkness.DarknessSuit;
+import fr.cocoraid.prodigysuits.suit.suits.flamma.FlammaSuit;
 import fr.cocoraid.prodigysuits.suit.suits.glaciem.GlaciemSuit;
+import fr.cocoraid.prodigysuits.suit.suits.hazmat.HazmatSuit;
+import fr.cocoraid.prodigysuits.suit.suits.poisonous.PoisonousSuit;
+import fr.cocoraid.prodigysuits.suit.suits.rainbow.RainbowSuit;
 import fr.cocoraid.prodigysuits.suit.suits.terra.TerraSuit;
+import fr.cocoraid.prodigysuits.suit.suits.zeus.ZeusSuit;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -30,6 +36,13 @@ public abstract class Suit implements Listener {
         register(new AquaSuit());
         register(new GlaciemSuit());
         register(new TerraSuit());
+        register(new AereSuit());
+        register(new FlammaSuit());
+        register(new DarknessSuit());
+        register(new PoisonousSuit());
+        register(new ZeusSuit());
+        register(new RainbowSuit());
+        register(new HazmatSuit());
     }
 
     /**
@@ -61,6 +74,7 @@ public abstract class Suit implements Listener {
     public void asyncGlobalAnimate(Player p) {
         asyncGlobalAnimate(ProdigyPlayer.instanceOfPlayer(p).getManager(),p.getLocation());
     }
+
 
     public void asyncGlobalAnimate(SuitManager manager, Location location) {
         parts.values().stream().filter(part -> manager.isEquipped(part)).forEach(part -> {

@@ -127,6 +127,29 @@ public final class VectorUtils {
         return vecs;
     }
 
+    public static ArrayList<Vector> createCircle(double y, int particle ,double radius) {
+        double amount = radius * particle;
+        double inc = (2 * Math.PI) / amount;
+        ArrayList<Vector> vecs = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            double angle = i * inc;
+            double x = radius * Math.cos(angle);
+            double z = radius * Math.sin(angle);
+            Vector v = new Vector(x, y, z);
+            vecs.add(v);
+        }
+        return vecs;
+    }
+
+    public static Vector getRandomVector() {
+        double x, y, z;
+        x = random.nextDouble() * 2 - 1;
+        y = random.nextDouble() * 2 - 1;
+        z = random.nextDouble() * 2 - 1;
+
+        return new Vector(x, y, z).normalize();
+    }
+
     public static final double angleToXAxis(Vector vector) {
         return Math.atan2(vector.getX(), vector.getY());
     }

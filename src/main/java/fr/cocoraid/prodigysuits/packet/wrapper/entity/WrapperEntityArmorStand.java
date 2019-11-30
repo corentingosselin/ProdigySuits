@@ -17,8 +17,6 @@ public class WrapperEntityArmorStand extends WrappedEntity {
         super(location, 30);
     }
 
-
-
     public void updateRotation(float yaw) {
         WrapperPlayServerEntityLook look = new WrapperPlayServerEntityLook();
         look.setYaw(yaw);

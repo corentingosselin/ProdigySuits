@@ -25,6 +25,9 @@ public abstract class WrappedEntity {
     private Map<EnumWrappers.ItemSlot, WrapperPlayServerEntityEquipment> equipments = new HashMap<>();
 
     protected Location location;
+    private boolean onFire = false;
+    private boolean invisible = false;
+
     /**
      * @check https://wiki.vg/Entity_metadata#Mobs
      */
@@ -134,8 +137,24 @@ public abstract class WrappedEntity {
         setDataWatcherObject(Boolean.class,3,visible);
     }
     public void setInvisible(boolean invisible) {
-        setDataWatcherObject(Byte.class,0,invisible ? (byte) 0x20 : (byte) 0);
+        this.invisible = invisible;
+        setDataWatcherObject(Byte.class,0, (byte) (
+                (invisible ? 0x20 : 0) |
+                        (onFire ? 0x01 : 0)
+
+        ));
     }
+
+    public void setOnFire(boolean onFire) {
+        this.onFire = onFire;
+
+        setDataWatcherObject(Byte.class,0, (byte) (
+                (invisible ? 0x20 : 0) |
+                        (onFire ? 0x01 : 0)
+
+        ));
+    }
+
     public void despawn() {
         destroyPacket.sendWorldPacket(location.getWorld());
     }

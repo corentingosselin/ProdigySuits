@@ -20,12 +20,6 @@ public class AquaHelmet extends Helmet {
                         .setDisplayName("§bCasque aquatique"));
     }
 
-    @Override
-    public void equip(Player p) {
-        super.equip(p);
-        p.getInventory().setHelmet(armor.getItem());
-    }
-
 
     @Override
     public void asyncAnimate(Location location) {

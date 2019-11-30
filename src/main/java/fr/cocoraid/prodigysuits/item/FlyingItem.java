@@ -1,10 +1,11 @@
-package fr.cocoraid.prodigysuits.suit;
+package fr.cocoraid.prodigysuits.item;
 
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import fr.cocoraid.prodigysuits.packet.wrapper.entity.WrapperEntityArmorStand;
 import fr.cocoraid.prodigysuits.utils.VectorUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -45,7 +46,7 @@ public class FlyingItem {
 
     private int stayTime = -1;
     public FlyingItem(Location start,
-                      Material material ,
+                      ItemStack item,
                       int stayTime,
                       float poseX,
                       float poseY,
@@ -74,6 +75,7 @@ public class FlyingItem {
             current.subtract(0,0.5,0);
         }
         this.vector = new Vector(radius * Math.cos(startAngle), y, radius * Math.sin(startAngle));
+
         current.add(vector);
         this.speedRotation = speedRotation;
         this.speedGoesUp = speedGoesUp;
@@ -92,14 +94,35 @@ public class FlyingItem {
         if(size != Size.EXTRA_SMALL && size != Size.SMALL) {
             flyingItem.setSmall(size == Size.BIG ? false : true);
             flyingItem.setHeadPose(poseX,poseY,poseZ);
-            flyingItem.equip(EnumWrappers.ItemSlot.HEAD,new ItemStack(material));
+            flyingItem.equip(EnumWrappers.ItemSlot.HEAD, item);
         } else {
             flyingItem.setSmall(size == Size.SMALL ? false : true);
             flyingItem.setRightArmPose(poseZ, poseY,322);
-            flyingItem.equip(EnumWrappers.ItemSlot.MAINHAND,new ItemStack(material));
+            flyingItem.equip(EnumWrappers.ItemSlot.MAINHAND, item);
         }
         flyingItem.sendUpdatedmetatada();
     }
+
+    public FlyingItem(Location start,
+                      Material material,
+                      int stayTime,
+                      float poseX,
+                      float poseY,
+                      float poseZ,
+                      Size size,
+                      double radius,
+                      double y,
+                      double startAngle,
+                      boolean rotate,
+                      boolean goesUp,
+                      double speedRotation,
+                      double speedGoesUp,
+                      boolean rotateItself,
+                      float itselfRotationSpeed) {
+
+        this(start,new ItemStack(material),stayTime,poseX,poseY,poseZ,size,radius,y,startAngle,rotate,goesUp,speedRotation,speedGoesUp,rotateItself,itselfRotationSpeed);
+    }
+
 
     private float yaw = 0;
     public void update(Location location) {
@@ -111,14 +134,12 @@ public class FlyingItem {
             flyingItem.teleport(flyingItem.getLocation().clone().add(direction.clone().multiply(directionSpeed)));
         }
 
-        if(rotate && direction == null) {
+        if((rotate || goesUp) && direction == null) {
             VectorUtils.rotateAroundAxisY(vector, speedRotation);
+            if(goesUp)
+                vector.add(new Vector(0,speedGoesUp,0));
             flyingItem.teleport(location.clone().add(vector));
-        }
 
-        if(goesUp && direction == null) {
-            flyingItem.teleport(location.clone().add(0,speedGoesUp,0
-            ));
         }
 
         if(rotationItself) {

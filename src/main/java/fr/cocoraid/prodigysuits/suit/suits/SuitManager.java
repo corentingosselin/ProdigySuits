@@ -6,12 +6,16 @@ import fr.cocoraid.prodigysuits.suit.parts.Chestplate;
 import fr.cocoraid.prodigysuits.suit.parts.Helmet;
 import fr.cocoraid.prodigysuits.suit.parts.Legging;
 
+import java.util.UUID;
+
 public class SuitManager {
 
 
     private boolean boots,leggings,chestplate,helmet;
+    private UUID owner;
 
-    public SuitManager( ) {
+    public SuitManager(UUID owner) {
+        this.owner = owner;
     }
 
     public void setAll(boolean all) {
@@ -42,5 +46,9 @@ public class SuitManager {
         else if(part instanceof Legging && leggings) return true;
         else return false;
 
+    }
+
+    public UUID getOwner() {
+        return owner;
     }
 }

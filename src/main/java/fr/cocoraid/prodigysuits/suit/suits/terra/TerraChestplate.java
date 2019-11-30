@@ -1,11 +1,10 @@
 package fr.cocoraid.prodigysuits.suit.suits.terra;
 
-import fr.cocoraid.prodigysuits.suit.FlyingItem;
+import fr.cocoraid.prodigysuits.packet.wrapper.packet.WrapperPlayServerNamedSoundEffect;
+import fr.cocoraid.prodigysuits.item.FlyingItem;
 import fr.cocoraid.prodigysuits.suit.parts.Chestplate;
 import fr.cocoraid.prodigysuits.utils.ItemBuilder;
 import fr.cocoraid.prodigysuits.utils.UtilMath;
-import fr.cocoraid.prodigysuits.utils.VectorUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,26 +30,39 @@ public class TerraChestplate extends Chestplate {
 
     public void extractRetract(Player p) {
         List<FlyingItem> list = items.get(p.getUniqueId());
+        if(list.size() >= 10) return;
         int amount = list.size();
 
-        double angle = 0;
-        double stepAngle = 2 * Math.PI / amount;
+        int angle = 0;
+        double stepAngle = 360 / amount;
         for(int i = 0; i < amount; i++) {
             FlyingItem item = list.get(i);
-            Vector dir = new Vector(angle, 0, angle);
-            item.setDirection(dir);
-            item.setStayTime(3);
+            if(item.getDirection() != null) return;
+            Location l = p.getLocation();
+            l.setPitch(0);
+            l.setYaw(angle);
+            Vector direction = l.getDirection().multiply(2);
+            item.setDirection(direction);
+            item.setStayTime(1);
             item.addListener(new FlyingItem.ItemListener() {
                 @Override
                 public void onRemove() {
-
+                    WrapperPlayServerNamedSoundEffect sound = new WrapperPlayServerNamedSoundEffect();
+                    sound.setEffectPositionX(p.getLocation().getX());
+                    sound.setEffectPositionY(p.getLocation().getY());
+                    sound.setEffectPositionZ(p.getLocation().getZ());
+                    sound.setSoundName("dig.grass");
+                    sound.setPitch(2);
+                    sound.setVolume(0.5F);
+                    sound.sendPacket(p);
                 }
 
                 @Override
                 public void onUpdate() {
-                    if(item.getStayTime() <= 1 && item.getDirection().equals(dir)) {
-                        item.setDirection(dir.multiply(-1));
-                        item.setStayTime(2);
+                    if(item.getStayTime() <= 5 && item.getDirection().equals(direction)) {
+                        Vector dir = item.getCurrentLocation().toVector().subtract(p.getLocation().toVector()).normalize();
+                        item.setDirection(dir.multiply(-1.5));
+                        item.setStayTime(1);
                     }
                 }
             });
@@ -58,10 +70,24 @@ public class TerraChestplate extends Chestplate {
             angle+=stepAngle;
         }
 
+        WrapperPlayServerNamedSoundEffect sound = new WrapperPlayServerNamedSoundEffect();
+        sound.setEffectPositionX(p.getLocation().getX());
+        sound.setEffectPositionY(p.getLocation().getY());
+        sound.setEffectPositionZ(p.getLocation().getZ());
+        sound.setSoundName("mob.zombie.unfect");
+        sound.setPitch(2);
+        sound.setVolume(0.5F);
+        sound.sendPacket(p);
+
     }
 
 
-
+    @Override
+    public void unequip(Player p) {
+        super.unequip(p);
+        items.get(p.getUniqueId()).forEach(i -> i.remove());
+        items.remove(p.getUniqueId());
+    }
 
     @Override
     public void asyncGlobalAnimate(Player p) {
@@ -108,10 +134,4 @@ public class TerraChestplate extends Chestplate {
 
     }
 
-
-    @Override
-    public void asyncGlobal() {
-        super.asyncGlobal();
-
-    }
 }

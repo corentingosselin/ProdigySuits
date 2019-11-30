@@ -19,7 +19,7 @@ public class Boots extends PartSuit {
     protected Vector vectorB = new Vector(-Math.cos(Math.PI / 40), 0.4, -Math.sin(Math.PI / 40));
     protected Vector vectorC = new Vector(1.5 * Math.cos(Math.PI / 22), 0.6, 1.5 * Math.sin(Math.PI / 22));
 
-    private List<Vector> torotate = new ArrayList<>();
+    protected List<Vector> torotate = new ArrayList<>();
     {
         torotate.add(vectorA);
         torotate.add(vectorB);
