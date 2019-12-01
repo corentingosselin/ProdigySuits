@@ -13,6 +13,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class ZeusSuit extends Suit {
 
@@ -21,16 +24,32 @@ public class ZeusSuit extends Suit {
     }
 
 
+    private Map<UUID,CloudLightning> clouds = new HashMap<>();
+
     @Override
     public void action(PlayerInteractEvent e) {
         super.action(e);
         if(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
             Player p = e.getPlayer();
-            new CloudLightning(p.getLocation().add(UtilMath.randInt(-5,5),2,UtilMath.randInt(-5,5))).spawn();
-            p.playSound(p.getLocation(), Sound.AMBIENCE_THUNDER,0.1F,1.5f);
+
+
+            if(clouds.containsKey(p.getUniqueId())) {
+                if(!clouds.get(p.getUniqueId()).end)
+                    return;
+                else
+                    clouds.remove(p.getUniqueId());
+            }
+            clouds.put(p.getUniqueId() , new CloudLightning(p.getLocation()));
+            p.playSound(p.getLocation(), Sound.AMBIENCE_THUNDER,0.5F,1.5f);
+
         }
     }
 
+    @Override
+    public void asyncGlobal() {
+        super.asyncGlobal();
+        clouds.values().stream().filter(c -> !c.end).forEach(c -> c.update());
+    }
 
     public class CloudLightning {
 
@@ -47,7 +66,24 @@ public class ZeusSuit extends Suit {
             return dir;
         }
 
+        private int number = 10;
+        private boolean end = false;
+        private int time = 0;
+        public void update() {
+            if(end) return;
+            if(number < 0) {
+                time++;
+                if(time >= 20 * 5) {
+                    end = true;
+                }
+                return;
+            }
+            number--;
+            spawn();
+        }
+
         public void spawn() {
+            Location location = this.location.clone().add(UtilMath.randInt(-5,5),2,UtilMath.randInt(-5,5));
             ParticleEffect.CLOUD.display(location,0.2F,0.2F,0.2F,0F,20,null);
             Location loc = location.clone();
             Vector v = getVector();

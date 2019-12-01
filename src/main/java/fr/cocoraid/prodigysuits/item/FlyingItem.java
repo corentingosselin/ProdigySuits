@@ -195,5 +195,7 @@ public class FlyingItem {
         return flyingItem != null;
     }
 
-
+    public WrapperEntityArmorStand getFlyingItem() {
+        return flyingItem;
+    }
 }

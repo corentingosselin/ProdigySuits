@@ -54,14 +54,15 @@ public class ProdigySuits extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player) {
             Player p = (Player) sender;
+            ProdigyPlayer pp = ProdigyPlayer.instanceOfPlayer(p);
             if(args.length == 0) {
-                ProdigyPlayer pp = ProdigyPlayer.instanceOfPlayer(p);
                 pp.equip("rainbow");
             }
 
             if(args.length == 1) {
-                ProdigyPlayer pp = ProdigyPlayer.instanceOfPlayer(p);
-                pp.equip("rainbow",args[0]);
+                pp.equip(args[0]);
+            } else if(args.length == 2) {
+                pp.equip(args[0]);
             }
 
         }

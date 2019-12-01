@@ -65,7 +65,7 @@ public class PoisonousSuit extends Suit {
             if(end) return;
 
             int k = 0;
-            for (Vector v : VectorUtils.createCircle(0, 32, radius)) {
+            for (Vector v : VectorUtils.createCircle(0, 8, radius)) {
                 if(i%2==0)
                     ParticleEffect.SPELL_MOB.display(location.clone().add(v),
                             new RegularColor(new java.awt.Color(49, 242, 5)));

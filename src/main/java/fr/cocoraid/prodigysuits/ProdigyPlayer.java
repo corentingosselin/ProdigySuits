@@ -18,8 +18,7 @@ public class ProdigyPlayer {
 
     public void equip(String suitName) {
         if(suit != null) {
-            suit.unequip(player);
-            manager.setAll(false);
+            unEquip();
             if(suit.getName().equalsIgnoreCase(suitName)) {
                 return;
             } else {

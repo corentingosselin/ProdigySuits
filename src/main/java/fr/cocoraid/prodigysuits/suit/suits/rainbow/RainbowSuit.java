@@ -99,13 +99,14 @@ public class RainbowSuit extends Suit {
             this.location = location;
             this.nyancat = new FlyingItem(location,
                     ItemBuilder.Head.NYANCAT,
-                    3,0,0,0,
+                    3,location.getPitch(),0,0,
                     FlyingItem.Size.MEDIUM,
                     0,0,0,
                     false,false,0,
                     0,false,
                     0);
-            nyancat.setDirection(location.getDirection().setY(0));
+
+            nyancat.setDirection(location.getDirection());
             nyancat.setDirectionSpeed(0.2);
             nyancat.addListener(new FlyingItem.ItemListener() {
                 @Override

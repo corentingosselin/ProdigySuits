@@ -61,6 +61,7 @@ public abstract class AbstractPacket {
 		return handle;
 	}
 
+
 	/**
 	 * Send the current packet to the given receiver.
 	 *
@@ -76,7 +77,7 @@ public abstract class AbstractPacket {
 		}
 	}
 
-	private static final int viewDistance = Bukkit.getServer().getViewDistance();
+	private static final int viewDistance = Bukkit.getServer().getViewDistance() * 32;
 	public void sendNearbyPacket(Location location) {
 		Bukkit.getOnlinePlayers()
 				.stream()
