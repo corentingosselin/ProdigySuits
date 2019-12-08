@@ -81,13 +81,14 @@ public class TerraChestplate extends Chestplate {
 
     }
 
-
     @Override
-    public void unequip(Player p) {
-        super.unequip(p);
+    public void remove(Player p) {
+        super.remove(p);
+        if(!items.containsKey(p.getUniqueId())) return;
         items.get(p.getUniqueId()).forEach(i -> i.remove());
         items.remove(p.getUniqueId());
     }
+
 
     @Override
     public void asyncGlobalAnimate(Player p) {

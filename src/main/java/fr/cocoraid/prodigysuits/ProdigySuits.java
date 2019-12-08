@@ -1,5 +1,6 @@
 package fr.cocoraid.prodigysuits;
 
+import fr.cocoraid.prodigysuits.event.TaskManager;
 import fr.cocoraid.prodigysuits.suit.Suit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -21,7 +22,7 @@ public class ProdigySuits extends JavaPlugin {
         instance = this;
 
         Suit.registerSuits();
-
+        new TaskManager().runTaskTimerAsynchronously(this,0,0);
         new BukkitRunnable() {
             @Override
             public void run() {

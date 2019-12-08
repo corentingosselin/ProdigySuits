@@ -27,12 +27,10 @@ public abstract class PartSuit extends Suit {
         time%=99999999;
     }
 
-    public void equip(Player p) {
-    }
+   public void remove(Player p) {
 
-    public void unequip(Player p) {
+   }
 
-    }
 
     public ItemBuilder getArmor() {
         return armor;

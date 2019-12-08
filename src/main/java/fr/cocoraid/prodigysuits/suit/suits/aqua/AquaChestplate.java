@@ -9,11 +9,13 @@ import fr.cocoraid.prodigysuits.utils.UtilMath;
 import fr.cocoraid.prodigysuits.utils.VectorUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class AquaChestplate extends Chestplate {
@@ -28,15 +30,26 @@ public class AquaChestplate extends Chestplate {
     }
 
     private List<Fish> fishes = new ArrayList<>();
-    @Override
-    public void asyncAnimate(Location location) {
-        super.asyncAnimate(location);
 
+    @Override
+    public void remove(Player p) {
+        super.remove(p);
+        fishes.stream().filter(f -> f.owner.equals(p.getUniqueId()));
+    }
+
+    @Override
+    public void asyncGlobalAnimate(Player p) {
+        super.asyncGlobalAnimate(p);
         if(time % (10) == 0) {
-            Fish fish = new Fish(location);
+            Fish fish = new Fish(p.getLocation(),p.getUniqueId());
             fishes.add(fish);
         }
+    }
 
+
+    @Override
+    public void asyncGlobal() {
+        super.asyncGlobal();
         fishes.removeIf(fish -> {
             if(fish == null) return true;
             else {
@@ -44,10 +57,7 @@ public class AquaChestplate extends Chestplate {
                 return false;
             }
         });
-
-
     }
-
 
     public void goTo(Vector direction) {
         fishes.forEach(f -> {
@@ -57,10 +67,12 @@ public class AquaChestplate extends Chestplate {
 
 
     public class Fish {
+        private UUID owner;
         private float maxHeight = 0.1F;
         private WrapperEntityArmorStand fish;
         private Vector direction = VectorUtils.getRandomCircleVector().normalize();
-        public Fish(Location location) {
+        public Fish(Location location, UUID owner) {
+            this.owner = owner;
             Location loc = location.clone().add(VectorUtils.getRandomCircleVector().normalize());
 
             loc.setDirection(direction);

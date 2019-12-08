@@ -2,6 +2,10 @@ package fr.cocoraid.prodigysuits.suit;
 
 import fr.cocoraid.prodigysuits.ProdigyPlayer;
 import fr.cocoraid.prodigysuits.ProdigySuits;
+import fr.cocoraid.prodigysuits.suit.parts.Chestplate;
+import fr.cocoraid.prodigysuits.suit.parts.Helmet;
+import fr.cocoraid.prodigysuits.suit.parts.Legging;
+import fr.cocoraid.prodigysuits.suit.suits.Parts;
 import fr.cocoraid.prodigysuits.suit.suits.SuitManager;
 import fr.cocoraid.prodigysuits.suit.suits.aere.AereSuit;
 import fr.cocoraid.prodigysuits.suit.suits.aqua.AquaSuit;
@@ -77,7 +81,12 @@ public abstract class Suit implements Listener {
 
 
     public void asyncGlobalAnimate(SuitManager manager, Location location) {
+        ProdigyPlayer pp = ProdigyPlayer.instanceOfPlayer(manager.getOwner());
         parts.values().stream().filter(part -> manager.isEquipped(part)).forEach(part -> {
+            if(pp.isPlayerMoving() && (part instanceof Helmet || part instanceof Chestplate || part instanceof Legging))  {
+                part.remove(pp.getPlayer());
+                return;
+            }
             part.asyncAnimate(location);
         });
     }
@@ -102,6 +111,7 @@ public abstract class Suit implements Listener {
         inv.setChestplate(null);
         inv.setLeggings(null);
         inv.setBoots(null);
+        parts.values().forEach(part -> part.remove(p));
     }
 
 

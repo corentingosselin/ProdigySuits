@@ -3,13 +3,42 @@ package fr.cocoraid.prodigysuits;
 import fr.cocoraid.prodigysuits.suit.PartSuit;
 import fr.cocoraid.prodigysuits.suit.Suit;
 import fr.cocoraid.prodigysuits.suit.suits.SuitManager;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class ProdigyPlayer {
+
+    private Location oldLocation;
+    private boolean moving = false;
+
+    public boolean isPlayerMoving() {
+        return moving;
+    }
+
+
+    public void checkMove() {
+        Location current = player.getLocation();
+        Location last = oldLocation;
+        if(last == null) {
+            last = current;
+        }
+        this.oldLocation = current;
+        if ((last.getX() != current.getX()) || (last.getZ() != current.getZ())) {
+            if (!moving)
+                this.moving = true;
+
+        }
+        else if (moving)
+            this.moving = false;
+
+    }
+
+    public void setOldLocation(Location oldLocation) {
+        this.oldLocation = oldLocation;
+    }
 
     private static Map<UUID,ProdigyPlayer> prodigyPlayers = new HashMap<>();
 
@@ -18,10 +47,11 @@ public class ProdigyPlayer {
 
     public void equip(String suitName) {
         if(suit != null) {
-            unEquip();
             if(suit.getName().equalsIgnoreCase(suitName)) {
+                unEquip();
                 return;
             } else {
+                unEquip();
                 this.suit = Suit.getSuits().get(suitName);
                 manager.setAll(true);
                 suit.equip(player);
@@ -68,10 +98,21 @@ public class ProdigyPlayer {
         manager = new SuitManager(player.getUniqueId());
     }
 
+    public ProdigyPlayer(UUID uuid) {
+        this.player = Bukkit.getPlayer(uuid);
+        manager = new SuitManager(uuid);
+    }
+
     public static ProdigyPlayer instanceOfPlayer(Player p) {
         if(!prodigyPlayers.containsKey(p.getUniqueId()))
             prodigyPlayers.put(p.getUniqueId(), new ProdigyPlayer(p));
         return prodigyPlayers.get(p.getUniqueId());
+    }
+
+    public static ProdigyPlayer instanceOfPlayer(UUID uuid) {
+        if(!prodigyPlayers.containsKey(uuid))
+            prodigyPlayers.put(uuid, new ProdigyPlayer(uuid));
+        return prodigyPlayers.get(uuid);
     }
 
     public static Map<UUID, ProdigyPlayer> getProdigyPlayers() {

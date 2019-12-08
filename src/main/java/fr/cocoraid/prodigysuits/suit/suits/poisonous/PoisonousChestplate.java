@@ -7,6 +7,7 @@ import fr.cocoraid.prodigysuits.utils.UtilMath;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -20,6 +21,12 @@ public class PoisonousChestplate extends Chestplate {
     }
 
     private List<FlyingItem> items = new ArrayList<>();
+    @Override
+    public void remove(Player p) {
+        super.remove(p);
+        items.forEach(i -> i.remove());
+        items.clear();
+    }
 
     @Override
     public void asyncAnimate(Location location) {

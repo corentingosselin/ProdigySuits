@@ -16,6 +16,8 @@ public class FlyingItem {
 
     private List<ItemListener> listeners = new ArrayList<>();
 
+
+
     public interface ItemListener {
         void onRemove();
         void onUpdate();
@@ -133,6 +135,7 @@ public class FlyingItem {
         if(direction != null) {
             flyingItem.teleport(flyingItem.getLocation().clone().add(direction.clone().multiply(directionSpeed)));
         }
+
 
         if((rotate || goesUp) && direction == null) {
             VectorUtils.rotateAroundAxisY(vector, speedRotation);

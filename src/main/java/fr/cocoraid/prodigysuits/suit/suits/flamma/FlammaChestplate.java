@@ -8,6 +8,7 @@ import fr.cocoraid.prodigysuits.utils.UtilMath;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -20,9 +21,11 @@ public class FlammaChestplate extends Chestplate {
     }
 
     private List<FlyingItem> items = new ArrayList<>();
-
-    public List<FlyingItem> getItems() {
-        return items;
+    @Override
+    public void remove(Player p) {
+        super.remove(p);
+        items.forEach(i -> i.remove());
+        items.clear();
     }
 
     @Override

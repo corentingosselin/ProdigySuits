@@ -5,6 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class UtilMath {
 
+
     private static Random rand = new Random();
     public static float randFloat(float min, float max) {
         return rand.nextFloat() * (max - min) + min;

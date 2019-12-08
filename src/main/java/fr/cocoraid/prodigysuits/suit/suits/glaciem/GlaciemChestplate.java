@@ -31,6 +31,8 @@ public class GlaciemChestplate extends Chestplate {
         refill(p);
     }
 
+
+
     private void refill(Player p) {
 
         WrapperPlayServerNamedSoundEffect sound = new WrapperPlayServerNamedSoundEffect();
@@ -69,7 +71,7 @@ public class GlaciemChestplate extends Chestplate {
     }
 
     protected void launch(Player p) {
-        if(flyingItems.get(p.getUniqueId()).isEmpty()) {
+        if(!flyingItems.containsKey(p.getUniqueId()) || flyingItems.get(p.getUniqueId()).isEmpty()) {
             refill(p);
         } else {
             FlyingItem item = flyingItems.get(p.getUniqueId()).getLast();
@@ -109,12 +111,18 @@ public class GlaciemChestplate extends Chestplate {
     @Override
     public void unequip(Player p) {
         super.unequip(p);
-        flyingItems.get(p.getUniqueId()).forEach(f -> {
-            f.remove();
-        });
-        flyingItems.clear();
     }
 
+    @Override
+    public void remove(Player p) {
+        super.remove(p);
+        if(flyingItems.containsKey(p.getUniqueId())) {
+            flyingItems.get(p.getUniqueId()).forEach(f -> {
+                f.remove();
+            });
+            flyingItems.clear();
+        }
+    }
 
     @Override
     public void asyncAnimate(Location location) {

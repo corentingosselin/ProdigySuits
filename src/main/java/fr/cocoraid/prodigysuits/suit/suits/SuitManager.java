@@ -11,6 +11,7 @@ import java.util.UUID;
 public class SuitManager {
 
 
+
     private boolean boots,leggings,chestplate,helmet;
     private UUID owner;
 
@@ -35,6 +36,17 @@ public class SuitManager {
         else if(part instanceof Chestplate) this.chestplate = equip;
         else if(part instanceof Legging) this.leggings = equip;
     }
+
+
+    public boolean isEquipped(Parts part) {
+        if(part == Parts.BOOTS && boots) return true;
+        else if(part == Parts.HELMET && helmet) return true;
+        else if(part == Parts.CHESTPLATE && chestplate) return true;
+        else if(part == Parts.LEGGINGS && leggings) return true;
+        else return false;
+
+    }
+
 
 
 
